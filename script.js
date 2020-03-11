@@ -1,114 +1,96 @@
-/* window.onload = function(){
-    //visual 
-    var field = document.getElementById('field');
-    var context = field.getContext('2d');
-    document.addEventListener("keydown", keyPush);
-    setInterval(game, 80);
+window.onload = function(){
     
-    const speed = 1;
-    var speedX = 0
-    var speedY = 0;
-    //snake head position
-    var pointX = 10;
-    var pointY = 15;
-    var lenght = 30;
-    var quantity = 20;
-    var fruitX = 15;
-    var fruitY = 15;
+    var stage = document.getElementById('stage');
+    var ctx = stage.getContext("2d");
+    document.addEventListener("keydown", keyPush);
+    var pt = document.querySelector('input');
+    
+    
+    setInterval(game, 160);
+
+    const vel = 1;
+
+    var vx = vy = 0;
+    var px = 10;
+    var py = 15;
+    var tp = 20;
+    var qp = 15;
+    var ax = ay = 2;
 
     var trail = [];
-    var snakebody = 5;
-
+    tail = 1;
 
     function game(){
-        pointX += speedX;
-        pointY += speedY;
-
-        //snake never leaves the field
-        if(pointX < 0){
-            pointX = quantity - 1;
+        px += vx;
+        py += vy;
+        if (px <0) {
+            px = qp-1;
+        }
+        if (px > qp-1) {
+            px = 0;
+        }
+        if (py < 0) {
+            py = qp-1;
+        }
+        if (py > qp-1) {
+            py = 0;
         }
 
-        if(pointX > quantity - 1){
-            pointX = 0;
-        }
+        ctx.fillStyle = "#004500";
+        ctx.fillRect(0,0, stage.width, stage.height);
 
-        if(pointY < 0){
-            pointY = quantity - 1;
-        }
+        ctx.fillStyle = "#780000";
+        ctx.fillRect(ax*tp, ay*tp, tp,tp);
 
-        if(pointY > quantity - 1){
-            pointY = 0;
-        }
-
-        //color and position of field
-        context.fillStyle = '#005500';
-        context.fillRect(0, 0, field.width, field.height);
-        
-        //color and position of fruit
-        context.fillStyle = "#990000";
-        context.fillRect(fruitX * length, fruitY * length, lenght, lenght);
-        
-        //color and position of snake
-        context.fillStyle = "black";
-        for(var i = 0; i < trail.lenght; i++){
-            context.fillRect(trail[i].x * length, trail[i].y * length, lenght - 1, lenght - 1);
-
-            //when the snakes hits the body
-            if(trail[i].x == pointX && trail[i].y == pointY){
-                speedX = 0;
-                speedY = 0;
-                alert("Game over");
+        ctx.fillStyle = "#110000";
+        for (var i = 0; i < trail.length; i++) {
+            ctx.fillRect(trail[i].x*tp, trail[i].y*tp, tp-1,tp-1);
+            if (trail[i].x == px && trail[i].y == py)
+            {
+                vx = vy=0;
+                tail = 1;
             }
         }
-        
-        
-        trail.push({ 
-            x:pointX, y:pointY
-        })
 
-        //decreasing snake size
-        while(trail.length > snakebody){
+        trail.push({x:px,y:py })
+        while (trail.length > tail) {
             trail.shift();
         }
 
-        //increasing snake size
-        if(fruitX == pointX && fruitY == pointY){
-            snakebody++;
-            fruitX = Math.floor(Math.random() * lenght);
-            fruitY = Math.floor(Math.random() * lenght);
+        if (ax==px && ay==py){
+            tail++;
+            pt++;
+            ax = Math.floor(Math.random()*qp);
+            ay = Math.floor(Math.random()*qp);
         }
 
     }
 
-    //move snake
     function keyPush(event){
-        switch(event.keyCode) {
-            //left
-            case 37:
-                speedX =- speed;
-                speedY = 0;
-            break;
-            //up
-            case 38:
-                speedX = 0;
-                speedY = -speed;
-            break;
-            //right
-            case 39:
-                speedX = speed;
-                speedY = 0;
-            break;
-            //down
-            case 40:
-                speedX = 0;
-                speedY = speed;
-            break;
 
+        switch (event.keyCode) {
+            case 37: // Left
+                vx = -vel;
+                vy = 0;
+                break;
+            case 38: // up
+                vx = 0;
+                vy = -vel;
+                break;
+            case 39: // right
+                vx = vel;
+                vy = 0;
+                break;
+            case 40: // down
+                vx = 0;
+                vy = vel;
+                break;         
             default:
-            break;
+               
+                break;
         }
+
+
     }
 
-} */
-
+}
