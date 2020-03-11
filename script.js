@@ -1,29 +1,25 @@
 window.onload = function(){
-    
+ 
     var stage = document.getElementById('stage');
     var ctx = stage.getContext("2d");
     document.addEventListener("keydown", keyPush);
-    var pt = document.querySelector('input');
-    
-    
-    setInterval(game, 160);
+    setInterval(game, 100);
 
     const vel = 1;
+    let vx = vy = 0;
+    let px = 10;
+    let py = 15;
+    let tp = 20;
+    let qp = 20;
+    let ax = ay = 15;
 
-    var vx = vy = 0;
-    var px = 10;
-    var py = 15;
-    var tp = 20;
-    var qp = 15;
-    var ax = ay = 2;
-
-    var trail = [];
-    tail = 1;
+    let trail = [];
+    let tail = 5;
 
     function game(){
         px += vx;
         py += vy;
-        if (px <0) {
+        if (px < 0) {
             px = qp-1;
         }
         if (px > qp-1) {
@@ -36,19 +32,19 @@ window.onload = function(){
             py = 0;
         }
 
-        ctx.fillStyle = "#004500";
+        ctx.fillStyle = "#005600";
         ctx.fillRect(0,0, stage.width, stage.height);
 
-        ctx.fillStyle = "#780000";
+        ctx.fillStyle = "#990000";
         ctx.fillRect(ax*tp, ay*tp, tp,tp);
 
-        ctx.fillStyle = "#110000";
+        ctx.fillStyle = "#ccc";
         for (var i = 0; i < trail.length; i++) {
             ctx.fillRect(trail[i].x*tp, trail[i].y*tp, tp-1,tp-1);
             if (trail[i].x == px && trail[i].y == py)
             {
-                vx = vy=0;
-                tail = 1;
+                vx = vy = 0;
+                tail = 2;
             }
         }
 
@@ -59,13 +55,12 @@ window.onload = function(){
 
         if (ax==px && ay==py){
             tail++;
-            pt++;
             ax = Math.floor(Math.random()*qp);
             ay = Math.floor(Math.random()*qp);
         }
 
     }
-
+    
     function keyPush(event){
 
         switch (event.keyCode) {
@@ -86,11 +81,20 @@ window.onload = function(){
                 vy = vel;
                 break;         
             default:
-               
                 break;
         }
+    }
 
+    var btnDifficult = document.getElementById('btnDifficult');
+    var btnStop = document.getElementById('btnStop');    
 
+    btnDifficult.onclick = function(){
+        setInterval(game, 110);
+        game();
+    }
+
+    btnStop.onclick = function(){
+        window.location.reload();
     }
 
 }
